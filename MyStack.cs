@@ -8,38 +8,56 @@ namespace Stack
     {
         public MyStack()
         {
-
+            array = new T[size];
         }
+    
 
-        public int size = 0;
-        public T[] array = new T[100];
-
+        public int size = 1;
+        public T[] array;
+       
         public void Push(T item)
         {
-            array[++size] = item;
+            Array.Resize<T>(ref array, ++size);
+            array[size - 1] = item;
         }
 
         public T Pop()
         {
-            if (size == 0)
-                return array[size];
+            if (size <= 1)
+            {
+                size = 1;
+                return array[size - 1];
+            }
             else
-                return array[size--];
+            {
+                var buf = array[size - 1];
+                Array.Resize<T>(ref array, --size);
+
+                return buf;
+            }
         }
 
         public int Size()
         {
-            return size;
+            return size - 1;
         }
 
         public T Peek()
         {
-            return array[size];
+            if (size <= 1)
+            {
+                size = 1;
+                return array[size - 1];
+            }
+            else
+            {
+                return array[size - 1];
+            }
         }
 
         public bool Empty()
         {
-            if (size == 0)
+            if (size - 1 == 0)
                 return true;
             else
                 return false;
